@@ -93,8 +93,6 @@ for n in tqdm(range(N_TIME_STEPS)):
 
     m_prior = 1/N_ENSEMBLE_MEMBERS * ensemble @ ONES @ (ONES.T)
 
-    #m_post = m_prior
-
     anomalies_prior = ensemble - m_prior
 
     projected_anomalies = (H @ anomalies_prior)
@@ -142,26 +140,29 @@ for n in tqdm(range(N_TIME_STEPS)):
     # levels=100,
     #     )
 
-#     plt.quiver(
-#             X, 
-#             Y,
-#             m_post_plot[..., 0],
-#             m_post_plot[..., 1],
-#             color="blue",
-#         )
+    # plt.quiver(
+    #         X, 
+    #         Y,
+    #         m_post_plot[..., 0],
+    #         m_post_plot[..., 1],
+    #         color="blue",
+    #     )
     
-#     plt.quiver(
-#             X, 
-#             Y,
-#             ref_vel_curr[..., 0],
-#             ref_vel_curr[..., 1],
-#             color="red",
-#         )
+    # plt.quiver(
+    #         X, 
+    #         Y,
+    #         ref_vel_curr[..., 0],
+    #         ref_vel_curr[..., 1],
+    #         color="red",
+    #     )
 
-#     plt.draw()
-#     plt.pause(0.0001)
-#     plt.clf()
+    # plt.draw()
+    # plt.pause(0.0001)
+    # plt.clf()
 
+plt.title('RMSE over Time')
+plt.xlabel('Time')
+plt.ylabel('Error')
 plt.plot(errs)
 plt.show()
 
