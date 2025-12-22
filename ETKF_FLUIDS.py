@@ -93,6 +93,8 @@ for n in tqdm(range(N_TIME_STEPS)):
 
     m_prior = 1/N_ENSEMBLE_MEMBERS * ensemble @ ONES @ (ONES.T)
 
+    m_post = m_prior
+
     anomalies_prior = ensemble - m_prior
 
     projected_anomalies = (H @ anomalies_prior)
