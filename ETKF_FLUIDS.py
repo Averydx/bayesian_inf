@@ -39,7 +39,7 @@ forcing_function_vectorized = np.vectorize(
     )
 
 
-N_ENSEMBLE_MEMBERS = 100
+N_ENSEMBLE_MEMBERS = 20
 
 rng = np.random.default_rng(0)
 
@@ -52,7 +52,7 @@ N_TIME_STEPS = observations.shape[0]
 
 observations_flat = observations.reshape(N_TIME_STEPS,-1)
 R_obs = 0.00001 * np.eye(observations_flat.shape[1])
-state_std = 1.0
+state_std = 0.001
 
 ONES = np.ones((N_ENSEMBLE_MEMBERS,1))
 ENSEMBLE_SHAPE = (*vector_shape,N_ENSEMBLE_MEMBERS)
@@ -95,26 +95,26 @@ for n in tqdm(range(N_TIME_STEPS)):
 
     m_post = m_prior
 
-    anomalies_prior = ensemble - m_prior
+    # anomalies_prior = ensemble - m_prior
 
-    projected_anomalies = (H @ anomalies_prior)
-    R_obs_inv = np.linalg.pinv(R_obs)
+    # projected_anomalies = (H @ anomalies_prior)
+    # R_obs_inv = np.linalg.pinv(R_obs)
 
-    LAM,Q = np.linalg.eigh(np.eye(N_ENSEMBLE_MEMBERS) + 1/(N_ENSEMBLE_MEMBERS - 1) * projected_anomalies.T @ R_obs_inv @ projected_anomalies)
+    # LAM,Q = np.linalg.eigh(np.eye(N_ENSEMBLE_MEMBERS) + 1/(N_ENSEMBLE_MEMBERS - 1) * projected_anomalies.T @ R_obs_inv @ projected_anomalies)
 
-    LAM_inv = 1/LAM * np.eye(len(LAM))
+    # LAM_inv = 1/LAM * np.eye(len(LAM))
 
-    LAM_inv_sqrt = (LAM**-1/2) * np.eye(len(LAM))
+    # LAM_inv_sqrt = (LAM**-1/2) * np.eye(len(LAM))
 
-    K = 1/(N_ENSEMBLE_MEMBERS - 1) * anomalies_prior @ (Q @ LAM_inv @ Q.T) @ (projected_anomalies).T @ R_obs_inv
+    # K = 1/(N_ENSEMBLE_MEMBERS - 1) * anomalies_prior @ (Q @ LAM_inv @ Q.T) @ (projected_anomalies).T @ R_obs_inv
 
-    obs_current = observations_flat[n,:].reshape(-1,1)
+    # obs_current = observations_flat[n,:].reshape(-1,1)
 
-    m_post = m_prior + K @ (obs_current @ ONES.T - H @ m_prior)
+    # m_post = m_prior + K @ (obs_current @ ONES.T - H @ m_prior)
 
-    anomalies_post = anomalies_prior @ (Q @ LAM_inv_sqrt @ Q.T)
+    # anomalies_post = anomalies_prior @ (Q @ LAM_inv_sqrt @ Q.T)
 
-    ensemble = m_post + anomalies_post
+    ensemble = m_post #+ anomalies_post
 
     ###Enforce BCs 
     ensemble = ensemble.reshape(ENSEMBLE_SHAPE)
